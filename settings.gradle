@@ -1,0 +1,10 @@
+rootProject.name = 'saechimboard'
+
+include 'common'
+include 'service'
+include 'service:article'
+include 'service:comment'
+include 'service:view'
+include 'service:like'
+include 'service:article-read'
+include 'service:hot-article'
