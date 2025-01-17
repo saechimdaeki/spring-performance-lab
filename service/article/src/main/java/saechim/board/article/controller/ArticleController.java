@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import saechim.board.article.service.ArticleService;
 import saechim.board.article.service.request.ArticleCreateRequest;
 import saechim.board.article.service.request.ArticleUpdateRequest;
+import saechim.board.article.service.response.ArticlePageResponse;
 import saechim.board.article.service.response.ArticleResponse;
 
 @RestController
@@ -22,6 +24,15 @@ public class ArticleController {
 	@GetMapping("/v1/articles/{articleId}")
 	public ArticleResponse read(@PathVariable final Long articleId) {
 		return articleService.read(articleId);
+	}
+
+	@GetMapping("/v1/articles")
+	public ArticlePageResponse readAll(
+		@RequestParam("boardId") final Long boardId,
+		@RequestParam("page") final Long page,
+		@RequestParam("pageSize") final Long pageSize
+	) {
+		return articleService.readAll(boardId, page, pageSize);
 	}
 
 	@PostMapping("/v1/articles")

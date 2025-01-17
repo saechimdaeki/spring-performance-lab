@@ -6,6 +6,7 @@ import org.springframework.web.client.RestClient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import saechim.board.article.service.response.ArticlePageResponse;
 import saechim.board.article.service.response.ArticleResponse;
 
 class ArticleApiTest {
@@ -36,6 +37,19 @@ class ArticleApiTest {
 	@Test
 	void deleteTest() {
 		delete(138106671130112000L);
+	}
+	
+	@Test
+	void readAllTest() {
+		final ArticlePageResponse response = restClient.get()
+			.uri("/v1/articles?boardId=1&pageSize=30&page=1")
+			.retrieve()
+			.body(ArticlePageResponse.class);
+
+		System.out.println("response.getArticleCount() = " + response.getArticleCount());
+		for (ArticleResponse article : response.getArticles()) {
+			System.out.println("articleId = " + article.getArticleId());
+		}
 	}
 
 	void delete(final Long articleId) {

@@ -8,6 +8,7 @@ import saechim.board.article.domain.Article;
 import saechim.board.article.repository.ArticleRepository;
 import saechim.board.article.service.request.ArticleCreateRequest;
 import saechim.board.article.service.request.ArticleUpdateRequest;
+import saechim.board.article.service.response.ArticlePageResponse;
 import saechim.board.article.service.response.ArticleResponse;
 import saechim.board.common.snowflake.Snowflake;
 
@@ -42,5 +43,17 @@ public class ArticleService {
 	@Transactional
 	public void delete(final Long articleId) {
 		articleRepository.deleteById(articleId);
+	}
+
+	public ArticlePageResponse readAll(final Long boardId, final Long page, final Long pageSize) {
+		return ArticlePageResponse.of(
+			articleRepository.findAll(boardId, (page - 1) * pageSize, pageSize).stream()
+				.map(ArticleResponse::from)
+				.toList(),
+			articleRepository.count(
+				boardId,
+				PageLimitCalculator.calculatePageLimit(page, pageSize, 10L)
+			)
+		);
 	}
 }
