@@ -1,7 +1,10 @@
 package saechim.board.article.api;
 
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 
 import lombok.AllArgsConstructor;
@@ -37,6 +40,34 @@ class ArticleApiTest {
 	@Test
 	void deleteTest() {
 		delete(138106671130112000L);
+	}
+
+	@Test
+	void readAllInfiniteScrollTest() {
+		final List<ArticleResponse> articles1 = restClient.get()
+			.uri("/v1/articles/infinite-scroll?boardId=1&pageSize=5")
+			.retrieve()
+			.body(new ParameterizedTypeReference<List<ArticleResponse>>() {
+			});
+
+		System.out.println("firstPage");
+		for (ArticleResponse articleResponse : articles1) {
+			System.out.println("articleResponse.getArticleId() = " + articleResponse.getArticleId());
+		}
+
+		final Long lastArticleId = articles1.getLast().getArticleId();
+		final List<ArticleResponse> articles2 = restClient.get()
+			.uri("/v1/articles/infinite-scroll?boardId=1&pageSize=5&lastArticleId=%s".formatted(lastArticleId))
+			.retrieve()
+			.body(new ParameterizedTypeReference<List<ArticleResponse>>() {
+			});
+
+		System.out.println("secondPage");
+		for (ArticleResponse articleResponse : articles2) {
+			System.out.println("articleResponse.getArticleId() = " + articleResponse.getArticleId());
+		}
+
+
 	}
 	
 	@Test
