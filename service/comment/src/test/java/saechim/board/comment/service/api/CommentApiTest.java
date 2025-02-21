@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestClient;
+import saechim.board.comment.service.response.CommentPageResponse;
 import saechim.board.comment.service.response.CommentResponse;
 
 @Slf4j
@@ -47,6 +48,22 @@ public class CommentApiTest {
         restClient.delete()
                 .uri("/v1/comments/{commentId}", 1L /*여긴 나중에 랜덤으로 */)
                 .retrieve();
+    }
+
+    @Test
+    void readAll() {
+
+        CommentPageResponse response = restClient.get()
+                .uri("/v1/comments?articleId=1&pageSize=10")
+                .retrieve()
+                .body(CommentPageResponse.class);
+
+        log.info("response = {}", response);
+        for (CommentResponse comment : response.getComments()) {
+            if (!comment.getCommentId().equals(comment.getParentCommentId()))
+                log.info("\t");
+            log.info("comment.getCommentId() = {}", comment.getCommentId());
+        }
     }
 
     @Getter
