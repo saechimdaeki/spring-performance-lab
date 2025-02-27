@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import saechim.board.common.snowflake.Snowflake;
-import saechim.board.like.entity.ArticleLike;
-import saechim.board.like.entity.ArticleLikeCount;
+import saechim.board.like.domain.ArticleLike;
+import saechim.board.like.domain.ArticleLikeCount;
 import saechim.board.like.repository.ArticleLikeCountRepository;
 import saechim.board.like.repository.ArticleLikeRepository;
 import saechim.board.like.service.response.ArticleLikeResponse;

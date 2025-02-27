@@ -1,11 +1,11 @@
 package saechim.board.comment.service.response;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.ToString;
-import saechim.board.comment.entity.Comment;
-import saechim.board.comment.entity.CommentV2;
-
-import java.time.LocalDateTime;
+import saechim.board.comment.domain.Comment;
+import saechim.board.comment.domain.CommentV2;
 
 @Getter
 @ToString

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import jakarta.persistence.LockModeType;
-import saechim.board.like.entity.ArticleLikeCount;
+import saechim.board.like.domain.ArticleLikeCount;
 
 public interface ArticleLikeCountRepository extends JpaRepository<ArticleLikeCount, Long> {
 

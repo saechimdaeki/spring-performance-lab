@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import saechim.board.comment.entity.CommentV2;
+import saechim.board.comment.domain.CommentV2;
 
 public interface CommentRepositoryV2 extends JpaRepository<CommentV2, Long> {
 

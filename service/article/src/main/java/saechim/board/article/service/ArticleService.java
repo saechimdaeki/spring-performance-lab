@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import saechim.board.article.domain.Article;
+import saechim.board.article.domain.BoardArticleCount;
 import saechim.board.article.repository.ArticleRepository;
+import saechim.board.article.repository.BoardArticleCountRepository;
 import saechim.board.article.service.request.ArticleCreateRequest;
 import saechim.board.article.service.request.ArticleUpdateRequest;
 import saechim.board.article.service.response.ArticlePageResponse;
@@ -20,6 +22,7 @@ import saechim.board.common.snowflake.Snowflake;
 public class ArticleService {
 	private final Snowflake snowflake = new Snowflake();
 	private final ArticleRepository articleRepository;
+	private final BoardArticleCountRepository boardArticleCountRepository;
 
 	@Transactional
 	public ArticleResponse create(final ArticleCreateRequest request) {
@@ -27,6 +30,12 @@ public class ArticleService {
 			Article.create(snowflake.nextId(), request.getTitle(), request.getContent(), request.getBoardId(),
 				request.getWriterId())
 		);
+		int result = boardArticleCountRepository.increase(request.getBoardId());
+		if (result == 0) {
+			boardArticleCountRepository.save(
+				BoardArticleCount.init(request.getBoardId(), 1L)
+			);
+		}
 
 		return ArticleResponse.from(article);
 	}
@@ -44,7 +53,9 @@ public class ArticleService {
 
 	@Transactional
 	public void delete(final Long articleId) {
-		articleRepository.deleteById(articleId);
+		Article article = articleRepository.findById(articleId).orElseThrow();
+		articleRepository.delete(article);
+		boardArticleCountRepository.decrease(article.getBoardId());
 	}
 
 	public ArticlePageResponse readAll(final Long boardId, final Long page, final Long pageSize) {
@@ -59,10 +70,17 @@ public class ArticleService {
 		);
 	}
 
-	public List<ArticleResponse> readAllInfiniteScroll(final Long boardId, final Long pageSize, final Long lastArticleId) {
+	public List<ArticleResponse> readAllInfiniteScroll(final Long boardId, final Long pageSize,
+		final Long lastArticleId) {
 		final List<Article> articles = lastArticleId == null ?
 			articleRepository.findAllInfiniteScroll(boardId, pageSize) :
 			articleRepository.findAllInfiniteScroll(boardId, pageSize, lastArticleId);
 		return articles.stream().map(ArticleResponse::from).toList();
+	}
+
+	public Long count(Long boardId) {
+		return boardArticleCountRepository.findById(boardId)
+			.map(BoardArticleCount::getArticleCount)
+			.orElse(0L);
 	}
 }

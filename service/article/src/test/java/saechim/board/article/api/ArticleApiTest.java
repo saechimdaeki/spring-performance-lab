@@ -1,6 +1,5 @@
 package saechim.board.article.api;
 
-
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -67,9 +66,8 @@ class ArticleApiTest {
 			System.out.println("articleResponse.getArticleId() = " + articleResponse.getArticleId());
 		}
 
-
 	}
-	
+
 	@Test
 	void readAllTest() {
 		final ArticlePageResponse response = restClient.get()
@@ -85,7 +83,7 @@ class ArticleApiTest {
 
 	void delete(final Long articleId) {
 		restClient.delete()
-			.uri("/v1/articles/{articleId}",articleId)
+			.uri("/v1/articles/{articleId}", articleId)
 			.retrieve();
 	}
 
@@ -124,5 +122,23 @@ class ArticleApiTest {
 	static class ArticleUpdateRequest {
 		private String title;
 		private String content;
+	}
+
+	@Test
+	void countTest() {
+		ArticleResponse response = create(new ArticleCreateRequest("hi", "content", 1L, 2L));
+
+		Long count1 = restClient.get()
+			.uri("/v1/articles/boards/{boardId}/count", 2L)
+			.retrieve()
+			.body(Long.class);
+
+		System.out.println("count1 = " + count1);
+
+		Long count2 = restClient.delete()
+			.uri("/v1/articles/{articelId}", 2L)
+			.retrieve()
+			.body(Long.class);
+		System.out.println("count2 = " + count2);
 	}
 }

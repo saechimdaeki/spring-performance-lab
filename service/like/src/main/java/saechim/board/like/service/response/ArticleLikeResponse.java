@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.ToString;
-import saechim.board.like.entity.ArticleLike;
+import saechim.board.like.domain.ArticleLike;
 
 @Getter
 @ToString

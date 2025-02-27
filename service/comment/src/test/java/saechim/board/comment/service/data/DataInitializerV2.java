@@ -11,8 +11,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import saechim.board.comment.entity.CommentPath;
-import saechim.board.comment.entity.CommentV2;
+import saechim.board.comment.domain.CommentPath;
+import saechim.board.comment.domain.CommentV2;
 import saechim.board.common.snowflake.Snowflake;
 
 @SpringBootTest

@@ -1,4 +1,4 @@
-package saechim.board.like.entity;
+package saechim.board.like.domain;
 
 import java.time.LocalDateTime;
 

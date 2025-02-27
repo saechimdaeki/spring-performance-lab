@@ -1,7 +1,8 @@
-package saechim.board.comment.entity;
+package saechim.board.comment.domain;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -10,38 +11,37 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Table(name = "comment")
+@Table(name = "comment_v2")
 @Entity
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment {
+public class CommentV2 {
 	@Id
 	private Long commentId;
 	private String content;
-	private Long parentCommentId;
 	private Long articleId; // shard key
 	private Long writerId;
+	@Embedded
+	private CommentPath commentPath;
 	private Boolean deleted;
 	private LocalDateTime createdAt;
 
-	public static Comment create(final Long commentId, final String content, final Long parentCommentId,
-		final Long articleId,
-		final Long writerId) {
-
-		final Comment comment = new Comment();
+	public static CommentV2 create(Long commentId, String content, Long articleId, Long writerId,
+		CommentPath commentPath) {
+		CommentV2 comment = new CommentV2();
 		comment.commentId = commentId;
 		comment.content = content;
-		comment.parentCommentId = parentCommentId == null ? commentId : parentCommentId;
 		comment.articleId = articleId;
 		comment.writerId = writerId;
+		comment.commentPath = commentPath;
 		comment.deleted = false;
 		comment.createdAt = LocalDateTime.now();
 		return comment;
 	}
 
 	public boolean isRoot() {
-		return parentCommentId.longValue() == commentId;
+		return commentPath.isRoot();
 	}
 
 	public void delete() {

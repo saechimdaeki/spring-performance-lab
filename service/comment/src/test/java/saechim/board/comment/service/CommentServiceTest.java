@@ -1,8 +1,6 @@
 package saechim.board.comment.service;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
@@ -13,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import saechim.board.comment.entity.Comment;
+import saechim.board.comment.domain.Comment;
 import saechim.board.comment.repository.CommentRepository;
 
 @ExtendWith(MockitoExtension.class)
