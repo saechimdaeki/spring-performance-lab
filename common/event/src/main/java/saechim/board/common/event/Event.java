@@ -17,7 +17,7 @@ public class Event<T extends EventPayload> {
 		return event;
 	}
 
-	public static Event<EventPayload> fronJson(String json) {
+	public static Event<EventPayload> fromJson(String json) {
 		EventRaw eventRaw = DataSerializer.deserialize(json, EventRaw.class);
 
 		if (eventRaw == null) {

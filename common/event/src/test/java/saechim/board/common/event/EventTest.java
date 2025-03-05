@@ -36,7 +36,7 @@ class EventTest {
 		String json = event.toJson();
 		log.info("json: {}", json);
 
-		Event<EventPayload> result = Event.fronJson(json);
+		Event<EventPayload> result = Event.fromJson(json);
 
 		assertThat(result).isNotNull();
 		assertThat(result.getEventId()).isEqualTo(event.getEventId());
