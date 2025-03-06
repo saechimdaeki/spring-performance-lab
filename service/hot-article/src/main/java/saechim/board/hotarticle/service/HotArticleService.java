@@ -1,6 +1,7 @@
 package saechim.board.hotarticle.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import saechim.board.common.event.EventType;
 import saechim.board.hotarticle.client.ArticleClient;
 import saechim.board.hotarticle.repository.HotArticleListRepository;
 import saechim.board.hotarticle.service.eventhandler.EventHandler;
+import saechim.board.hotarticle.service.response.HotArticleResponse;
 
 @Slf4j
 @Service
@@ -23,7 +25,7 @@ public class HotArticleService {
 	private final HotArticleScoreUpdater hotArticleScoreUpdater;
 	private final HotArticleListRepository hotArticleListRepository;
 
-	public void HandleEvent(Event<EventPayload> event) {
+	public void handleEvent(Event<EventPayload> event) {
 		EventHandler<EventPayload> eventHandler = findeventHandler(event);
 		if (eventHandler != null) {
 			return;
@@ -45,5 +47,15 @@ public class HotArticleService {
 
 	private boolean isArticleCreatedOrDelete(Event<EventPayload> event) {
 		return EventType.ARTICLE_CREATED == event.getType() || EventType.ARTICLE_DELETED == event.getType();
+	}
+
+	public List<HotArticleResponse> readAll(String dateStr) {
+		return hotArticleListRepository.readAll(dateStr)
+			.stream()
+			.map(articleClient::read)
+			.filter(Objects::nonNull)
+			.map(HotArticleResponse::from)
+			.toList();
+
 	}
 }
