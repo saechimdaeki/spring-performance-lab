@@ -37,6 +37,10 @@ public class HotArticleListRepository {
 		});
 	}
 
+	public void remove(Long articleId, LocalDateTime time) {
+		redisTemplate.opsForZSet().remove(generateKey(time), String.valueOf(articleId));
+	}
+
 	private String generateKey(LocalDateTime time) {
 		return generateKey(TIME_FORMATTER.format(time));
 	}
