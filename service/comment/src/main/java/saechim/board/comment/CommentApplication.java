@@ -1,4 +1,4 @@
-package saechim.board.view;
+package saechim.board.comment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EntityScan(basePackages = "saechim.board")
 @EnableJpaRepositories(basePackages = "saechim.board")
-public class ViewApplication {
+public class CommentApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(ViewApplication.class, args);
+		SpringApplication.run(CommentApplication.class, args);
 	}
 }
