@@ -14,3 +14,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+  kafka:
+    bootstrap-servers: 127.0.0.1:9002

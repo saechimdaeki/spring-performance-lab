@@ -4,4 +4,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     runtimeOnly 'com.mysql:mysql-connector-j'
     implementation project(':common:snowflake')
+    implementation project(':common:outbox-message-relay')
+    implementation project(':common:event')
 }
